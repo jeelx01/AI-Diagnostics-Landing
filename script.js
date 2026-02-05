@@ -1,0 +1,144 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Scroll Animations (IntersectionObserver)
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target); // Only animate once
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-up').forEach(el => {
+        observer.observe(el);
+    });
+
+    // 2. Navbar Scroll Effect
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // 3. Card Hover Spotlight Effect (Micro-interaction)
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+
+    // 4. Smooth Scroll for Anchor Links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                const navLinks = document.querySelector('.nav-links');
+                if (window.innerWidth <= 768 && navLinks.classList.contains('active')) {
+                     navLinks.classList.remove('active');
+                     const toggle = document.querySelector('.mobile-toggle');
+                     if (toggle) toggle.innerHTML = '☰';
+                }
+            }
+        });
+    });
+
+    // 5. Enhance Waitlist Form
+    const form = document.querySelector('.waitlist-form');
+    if (form) {
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('button');
+            const input = form.querySelector('input');
+            const originalText = btn.innerText;
+            
+            // Simulate API call
+            btn.innerText = 'Joining...';
+            btn.style.opacity = '0.8';
+            
+            setTimeout(() => {
+                btn.innerText = 'Welcome Aboard! 🚀';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)'; // Success Green
+                input.value = '';
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = ''; // Revert to CSS
+                    btn.style.opacity = '1';
+                }, 3000);
+            }, 1000);
+        };
+    }
+
+    // 6. Mobile Menu Logic
+    // Inject hamburger icon for mobile
+    if (window.innerWidth <= 768) {
+        const navContainer = document.querySelector('.nav-container');
+        const navLinks = document.querySelector('.nav-links');
+        
+        // Create toggle button
+        const toggle = document.createElement('div');
+        toggle.className = 'mobile-toggle';
+        toggle.innerHTML = '☰';
+        
+        // Style toggle directly to ensure visibility without extra CSS
+        Object.assign(toggle.style, {
+            color: 'white',
+            fontSize: '1.5rem',
+            cursor: 'pointer',
+            display: 'block',
+            zIndex: '101'
+        });
+        
+        // Insert before nav-links
+        if (!document.querySelector('.mobile-toggle')) {
+             navContainer.insertBefore(toggle, navLinks);
+        }
+        
+        toggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            
+            if (navLinks.classList.contains('active')) {
+                toggle.innerHTML = '✕';
+                // Apply active styles dynamically since we didn't add .active class in CSS
+                Object.assign(navLinks.style, {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'absolute',
+                    top: '80px',
+                    left: '0',
+                    width: '100%',
+                    background: '#050810',
+                    padding: '2rem',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                    gap: '1.5rem'
+                });
+            } else {
+                toggle.innerHTML = '☰';
+                navLinks.style = ''; // Clear inline styles
+            }
+        });
+    }
+});

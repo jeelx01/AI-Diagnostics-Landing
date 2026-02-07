@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const input = form.querySelector('input');
             const originalText = btn.innerText;
             
-            // CONFIGURATION: Replace this with your actual email address
-            const EMAIL_ADDRESS = "chauhanjeel57@gmail.com"; 
+            // CONFIGURATION: FormSubmit.co Token (Hides your email from spammers)
+            const EMAIL_ADDRESS = "c88f246709b30dd813061a3e77579690"; 
 
             if (EMAIL_ADDRESS === "INSERT_YOUR_EMAIL_HERE") {
                 alert("Please open script.js and replace 'INSERT_YOUR_EMAIL_HERE' with your actual email address to enable this form.");

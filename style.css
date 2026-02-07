@@ -424,6 +424,10 @@ p {
     color: var(--primary);
 }
 
+.step h3 {
+    margin-bottom: 1.5rem;
+}
+
 /* Stats / Accuracy */
 .stats-grid {
     display: grid;

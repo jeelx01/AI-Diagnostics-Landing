@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 5. Enhance Waitlist Form
+    // 5. Waitlist Form Functionality
     const form = document.querySelector('.waitlist-form');
     if (form) {
         form.onsubmit = (e) => {
@@ -74,11 +74,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const input = form.querySelector('input');
             const originalText = btn.innerText;
             
-            // Simulate API call
+            // CONFIGURATION: Replace this with your actual email address
+            const EMAIL_ADDRESS = "INSERT_YOUR_EMAIL_HERE"; 
+
+            if (EMAIL_ADDRESS === "INSERT_YOUR_EMAIL_HERE") {
+                alert("Please open script.js and replace 'INSERT_YOUR_EMAIL_HERE' with your actual email address to enable this form.");
+                return;
+            }
+
             btn.innerText = 'Joining...';
             btn.style.opacity = '0.8';
-            
-            setTimeout(() => {
+            btn.disabled = true;
+
+            fetch(`https://formsubmit.co/ajax/${EMAIL_ADDRESS}`, {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: input.value,
+                    _subject: "New Waitlist Request - Clivora"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
                 btn.innerText = 'Welcome Aboard! 🚀';
                 btn.style.background = 'linear-gradient(135deg, #10b981, #059669)'; // Success Green
                 input.value = '';
@@ -87,8 +107,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.innerText = originalText;
                     btn.style.background = ''; // Revert to CSS
                     btn.style.opacity = '1';
+                    btn.disabled = false;
                 }, 3000);
-            }, 1000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                btn.innerText = 'Error. Try again.';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                }, 3000);
+            });
         };
     }
 

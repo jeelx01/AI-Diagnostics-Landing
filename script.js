@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const originalText = btn.innerText;
             
             // CONFIGURATION: Replace this with your actual email address
-            const EMAIL_ADDRESS = "INSERT_YOUR_EMAIL_HERE"; 
+            const EMAIL_ADDRESS = "chauhanjeel57@gmail.com"; 
 
             if (EMAIL_ADDRESS === "INSERT_YOUR_EMAIL_HERE") {
                 alert("Please open script.js and replace 'INSERT_YOUR_EMAIL_HERE' with your actual email address to enable this form.");

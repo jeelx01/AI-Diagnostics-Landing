@@ -461,15 +461,26 @@ p {
 }
 
 .waitlist-form {
-    max-width: 500px;
+    max-width: 800px;
     margin: 3rem auto 0;
-    display: flex;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
     position: relative;
 }
 
+.waitlist-form .form-group {
+    width: 100%;
+}
+
+.waitlist-form button {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin-top: 1rem;
+}
+
 .waitlist-form input {
-    flex: 1;
+    width: 100%;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-light);
     border-radius: 50px;
@@ -593,7 +604,11 @@ footer::before {
     }
     
     .waitlist-form {
-        flex-direction: column;
+        grid-template-columns: 1fr;
+    }
+    
+    .waitlist-form button {
+        grid-column: span 1;
     }
     
     .hero-btns {

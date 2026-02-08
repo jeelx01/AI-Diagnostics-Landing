@@ -110,8 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(response => response.json())
             .then(data => {
-                btn.innerText = 'Welcome Aboard! 🚀';
-                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)'; // Success Green
+                // Revert button state immediately
+                btn.innerText = originalText;
+                btn.style.opacity = '1';
+                btn.disabled = false;
                 
                 // Clear all inputs
                 nameInput.value = '';
@@ -121,12 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 addressInput.value = '';
                 phoneInput.value = '';
                 
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.style.background = ''; // Revert to CSS
-                    btn.style.opacity = '1';
-                    btn.disabled = false;
-                }, 3000);
+                // Show Success Modal
+                const modal = document.getElementById('successModal');
+                if (modal) {
+                    modal.classList.add('active');
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -190,4 +191,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // 7. Global Modal Functions
+    window.closeModal = function() {
+        const modal = document.getElementById('successModal');
+        if (modal) {
+            modal.classList.remove('active');
+        }
+    };
 });

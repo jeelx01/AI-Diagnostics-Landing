@@ -1,0 +1,1 @@
+Align waitlist form fields using 2-column grid layout

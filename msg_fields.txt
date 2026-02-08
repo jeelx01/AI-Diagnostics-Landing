@@ -1,0 +1,1 @@
+Add doctor name, clinic name, and phone fields to waitlist form

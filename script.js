@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const nameInput = form.querySelector('input[name="name"]');
             const emailInput = form.querySelector('input[name="email"]');
             const clinicInput = form.querySelector('input[name="clinic"]');
+            const clinicEmailInput = form.querySelector('input[name="clinic_email"]');
             const addressInput = form.querySelector('input[name="address"]');
             const phoneInput = form.querySelector('input[name="phone"]');
             
@@ -101,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     name: nameInput.value,
                     email: emailInput.value,
                     clinic: clinicInput.value,
+                    clinic_email: clinicEmailInput.value,
                     address: addressInput.value,
                     phone: phoneInput.value,
                     _subject: "New Waitlist Request - Clivora"
@@ -115,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 nameInput.value = '';
                 emailInput.value = '';
                 clinicInput.value = '';
+                clinicEmailInput.value = '';
                 addressInput.value = '';
                 phoneInput.value = '';
                 

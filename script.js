@@ -71,7 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
         form.onsubmit = (e) => {
             e.preventDefault();
             const btn = form.querySelector('button');
-            const input = form.querySelector('input');
+            const nameInput = form.querySelector('input[name="name"]');
+            const emailInput = form.querySelector('input[name="email"]');
+            const clinicInput = form.querySelector('input[name="clinic"]');
+            const phoneInput = form.querySelector('input[name="phone"]');
+            
             const originalText = btn.innerText;
             
             // CONFIGURATION: FormSubmit.co Token (Hides your email from spammers)
@@ -93,7 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: input.value,
+                    name: nameInput.value,
+                    email: emailInput.value,
+                    clinic: clinicInput.value,
+                    phone: phoneInput.value,
                     _subject: "New Waitlist Request - Clivora"
                 })
             })
@@ -101,7 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 btn.innerText = 'Welcome Aboard! 🚀';
                 btn.style.background = 'linear-gradient(135deg, #10b981, #059669)'; // Success Green
-                input.value = '';
+                
+                // Clear all inputs
+                nameInput.value = '';
+                emailInput.value = '';
+                clinicInput.value = '';
+                phoneInput.value = '';
                 
                 setTimeout(() => {
                     btn.innerText = originalText;

@@ -150,8 +150,19 @@
         <div class="container">
             <h2 class="fade-up">Join the Future of Diagnostics</h2>
             <p style="margin: 1rem auto;" class="fade-up delay-1">We are currently onboarding select partner clinics for our pilot program.</p>
-            <form class="waitlist-form fade-up delay-2" onsubmit="event.preventDefault(); alert('Added to priority list.');">
-                <input type="email" name="email" placeholder="Enter your work email" required>
+            <form class="waitlist-form fade-up delay-2" onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Doctor's Full Name" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Work Email" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="clinic" placeholder="Clinic / Hospital Name" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="tel" name="phone" placeholder="Phone Number" class="form-input">
+                </div>
                 <button type="submit" class="btn btn-primary">Request Access</button>
             </form>
         </div>

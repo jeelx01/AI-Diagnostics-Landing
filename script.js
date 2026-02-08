@@ -92,6 +92,25 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.style.opacity = '0.8';
             btn.disabled = true;
 
+            const formData = {
+                name: nameInput.value,
+                email: emailInput.value,
+                clinic: clinicInput.value,
+                clinic_email: clinicEmailInput.value,
+                address: addressInput.value,
+                phone: phoneInput.value
+            };
+
+            // 1. Send to Backend (for Admin Dashboard)
+            // Using HF Space URL. If testing locally, ensure CORS allows it.
+            const API_URL = "https://jeelx01-ai-diagnostics-mvp.hf.space/api/waitlist/submit";
+            fetch(API_URL, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            }).catch(e => console.error("Backend sync failed:", e));
+
+            // 2. Send to FormSubmit (for Email Notifications)
             fetch(`https://formsubmit.co/ajax/${EMAIL_ADDRESS}`, {
                 method: "POST",
                 headers: { 
@@ -99,12 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: nameInput.value,
-                    email: emailInput.value,
-                    clinic: clinicInput.value,
-                    clinic_email: clinicEmailInput.value,
-                    address: addressInput.value,
-                    phone: phoneInput.value,
+                    ...formData,
                     _subject: "New Waitlist Request - Clivora"
                 })
             })

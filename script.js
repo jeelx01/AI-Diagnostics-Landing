@@ -101,17 +101,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 phone: phoneInput.value
             };
 
-            // 1. Send to Backend (for Admin Dashboard)
-            // Using HF Space URL. If testing locally, ensure CORS allows it.
+            // 1. Define Promises for both Backend and FormSubmit
             const API_URL = "https://jeelx01-ai-diagnostics-mvp.hf.space/api/waitlist/submit";
-            fetch(API_URL, {
+            
+            const backendPromise = fetch(API_URL, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
-            }).catch(e => console.error("Backend sync failed:", e));
+            }).then(response => {
+                if (!response.ok) throw new Error('Backend error');
+                return response.json();
+            }).catch(e => {
+                console.error("Backend sync failed:", e);
+                return { error: true }; // Return dummy object to prevent Promise.all from failing
+            });
 
-            // 2. Send to FormSubmit (for Email Notifications)
-            fetch(`https://formsubmit.co/ajax/${EMAIL_ADDRESS}`, {
+            const emailPromise = fetch(`https://formsubmit.co/ajax/${EMAIL_ADDRESS}`, {
                 method: "POST",
                 headers: { 
                     'Content-Type': 'application/json',
@@ -121,38 +126,40 @@ document.addEventListener('DOMContentLoaded', () => {
                     ...formData,
                     _subject: "New Waitlist Request - Clivora"
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Revert button state immediately
-                btn.innerText = originalText;
-                btn.style.opacity = '1';
-                btn.disabled = false;
-                
-                // Clear all inputs
-                nameInput.value = '';
-                emailInput.value = '';
-                clinicInput.value = '';
-                clinicEmailInput.value = '';
-                addressInput.value = '';
-                phoneInput.value = '';
-                
-                // Show Success Modal
-                const modal = document.getElementById('successModal');
-                if (modal) {
-                    modal.classList.add('active');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                btn.innerText = 'Error. Try again.';
-                setTimeout(() => {
+            }).then(response => response.json());
+
+            // 2. Wait for BOTH to complete
+            Promise.all([backendPromise, emailPromise])
+                .then(([backendData, emailData]) => {
+                    // Revert button state immediately
                     btn.innerText = originalText;
-                    btn.style.background = '';
                     btn.style.opacity = '1';
                     btn.disabled = false;
-                }, 3000);
-            });
+                    
+                    // Clear all inputs
+                    nameInput.value = '';
+                    emailInput.value = '';
+                    clinicInput.value = '';
+                    clinicEmailInput.value = '';
+                    addressInput.value = '';
+                    phoneInput.value = '';
+                    
+                    // Show Success Modal
+                    const modal = document.getElementById('successModal');
+                    if (modal) {
+                        modal.classList.add('active');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    btn.innerText = 'Error. Try again.';
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.style.background = '';
+                        btn.style.opacity = '1';
+                        btn.disabled = false;
+                    }, 3000);
+                });
         };
     }
 

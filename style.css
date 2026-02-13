@@ -161,8 +161,16 @@ p {
     text-decoration: none;
 }
 
-.logo span {
-    color: var(--primary);
+.logo img {
+    height: 28px;
+    width: auto;
+    display: block;
+}
+
+.logo-text {
+    color: var(--text-main);
+    font-weight: 700;
+    letter-spacing: -0.03em;
 }
 
 .nav-links {
